@@ -7,9 +7,9 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import * as argon from 'argon2';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { ReturnUser } from 'src/user/types';
 import { UserService } from 'src/user/user.service';
 import { LocalSigninDto, LocalSignupDto } from './dto';
+import { Tokens } from './types';
 
 @Injectable()
 export class AuthService {
@@ -19,34 +19,29 @@ export class AuthService {
     private prisma: PrismaService,
   ) {}
 
-  async localSignup(dto: LocalSignupDto) {
-    const user = await this.prisma.user.findUnique({
-      where: { email: dto.email },
-    });
+  async localSignup(dto: LocalSignupDto): Promise<Tokens> {
+    const user = await this.getByEmail(dto.email);
 
     if (user) throw new ConflictException('Email already in use');
 
     const hashedPassword = await this.hashData(dto.password);
     dto.password = hashedPassword;
 
-    const newUser = this.userService.create(dto);
+    const newUser = await this.userService.create(dto);
+
     const tokens = await this.issueTokens(
-      (
-        await newUser
-      ).id,
-      (
-        await newUser
-      ).name,
-      (
-        await newUser
-      ).email,
+      newUser.id,
+      newUser.name,
+      newUser.email,
     );
-    await this.updateRtHash((await newUser).id, tokens.refresh_token);
+
+    await this.updateRtHash(newUser.id, tokens.refresh_token);
+
     return tokens;
   }
 
-  async localSignin(dto: LocalSigninDto) {
-    const user = await this.userService.getByEmail(dto.email);
+  async localSignin(dto: LocalSigninDto): Promise<Tokens> {
+    const user = await this.getByEmail(dto.email);
 
     if (!user)
       throw new NotFoundException('No account is associated with that email');
@@ -56,11 +51,13 @@ export class AuthService {
     if (!checkPassword) throw new ForbiddenException('Invalid credentials');
 
     const tokens = await this.issueTokens(user.id, user.name, user.email);
+
     await this.updateRtHash(user.id, tokens.refresh_token);
+
     return tokens;
   }
 
-  async localSignout(userId: string) {
+  async localSignout(userId: string): Promise<boolean> {
     await this.prisma.user.updateMany({
       where: {
         id: userId,
@@ -82,16 +79,23 @@ export class AuthService {
         id: userId,
       },
     });
+
     if (!user || !user.refreshToken)
       throw new ForbiddenException('Access Denied');
 
     const rtMatches = await argon.verify(user.refreshToken, rt);
+
     if (!rtMatches) throw new ForbiddenException('Access Denied');
 
     const tokens = await this.issueTokens(user.id, user.name, user.email);
+
     await this.updateRtHash(user.id, tokens.refresh_token);
 
     return tokens;
+  }
+
+  async getByEmail(email: string) {
+    return await this.prisma.user.findUnique({ where: { email } });
   }
 
   hashData(data: string) {

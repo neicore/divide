@@ -18,7 +18,7 @@ export class UserService {
     updatedAt: true,
   };
 
-  async create(dto: CreateUserDto) {
+  async create(dto: CreateUserDto): Promise<ReturnUser> {
     const user = await this.prisma.user.create({
       data: dto,
       select: this.select,
@@ -28,14 +28,14 @@ export class UserService {
   }
 
   async getAll(): Promise<ReturnUser[]> {
-    const users = await this.prisma.user.findMany();
+    const users = await this.prisma.user.findMany({ select: this.select });
 
     if (!users) throw new NotFoundException('No users were found');
 
     return users;
   }
 
-  async getById(id: string) {
+  async getById(id: string): Promise<ReturnUser> {
     const user = await this.prisma.user.findUnique({
       where: { id },
       select: this.select,
@@ -46,8 +46,11 @@ export class UserService {
     return user;
   }
 
-  async getByEmail(email: string) {
-    const user = await this.prisma.user.findUnique({ where: { email } });
+  async getByEmail(email: string): Promise<ReturnUser> {
+    const user = await this.prisma.user.findUnique({
+      where: { email },
+      select: this.select,
+    });
 
     if (!user) throw new NotFoundException('User not found');
 

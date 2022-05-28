@@ -6,6 +6,7 @@ import {
 } from 'src/common/decorators';
 import { AuthService } from './auth.service';
 import { LocalSigninDto, LocalSignupDto } from './dto';
+import { Tokens } from './types';
 
 @Controller('auth')
 export class AuthController {
@@ -13,27 +14,27 @@ export class AuthController {
 
   @Public()
   @Post('local/signup')
-  localSignup(@Body() dto: LocalSignupDto) {
-    return this.authService.localSignup(dto);
+  async localSignup(@Body() dto: LocalSignupDto): Promise<Tokens> {
+    return await this.authService.localSignup(dto);
   }
 
   @Public()
   @Post('local/signin')
-  localSignin(@Body() dto: LocalSigninDto) {
-    return this.authService.localSignin(dto);
+  async localSignin(@Body() dto: LocalSigninDto): Promise<Tokens> {
+    return await this.authService.localSignin(dto);
   }
 
   @Post('local/signout')
-  localSignout(@GetCurrentUserId() userId: string) {
-    return this.authService.localSignout(userId);
+  async localSignout(@GetCurrentUserId() userId: string): Promise<boolean> {
+    return await this.authService.localSignout(userId);
   }
 
   @Public()
   @Post('local/refreshtoken')
-  refreshToken(
+  async refreshToken(
     @GetCurrentUserId() userId: string,
     @GetCurrentUser('refreshToken') refreshToken: string,
-  ) {
-    return this.authService.refreshToken(userId, refreshToken);
+  ): Promise<Tokens> {
+    return await this.authService.refreshToken(userId, refreshToken);
   }
 }
