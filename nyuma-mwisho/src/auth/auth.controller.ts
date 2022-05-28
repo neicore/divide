@@ -1,5 +1,9 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { Public } from 'src/common/decorators';
+import {
+  GetCurrentUser,
+  GetCurrentUserId,
+  Public,
+} from 'src/common/decorators';
 import { AuthService } from './auth.service';
 import { LocalSigninDto, LocalSignupDto } from './dto';
 
@@ -20,13 +24,16 @@ export class AuthController {
   }
 
   @Post('local/signout')
-  localSignout() {
-    return this.authService.localSignout;
+  localSignout(@GetCurrentUserId() userId: string) {
+    return this.authService.localSignout(userId);
   }
 
   @Public()
   @Post('local/refreshtoken')
-  refreshToken() {
-    return this.authService.refreshToken;
+  refreshToken(
+    @GetCurrentUserId() userId: string,
+    @GetCurrentUser('refreshToken') refreshToken: string,
+  ) {
+    return this.authService.refreshToken(userId, refreshToken);
   }
 }

@@ -1,4 +1,5 @@
 import {
+  ConflictException,
   ForbiddenException,
   Injectable,
   NotFoundException,
@@ -19,7 +20,12 @@ export class AuthService {
   ) {}
 
   async localSignup(dto: LocalSignupDto) {
-    console.log(dto);
+    const user = await this.prisma.user.findUnique({
+      where: { email: dto.email },
+    });
+
+    if (user) throw new ConflictException('Email already in use');
+
     const hashedPassword = await this.hashData(dto.password);
     dto.password = hashedPassword;
 
@@ -53,11 +59,39 @@ export class AuthService {
     await this.updateRtHash(user.id, tokens.refresh_token);
     return tokens;
   }
-  localSignout() {
-    return { message: 'Signed Out' };
+
+  async localSignout(userId: string) {
+    await this.prisma.user.updateMany({
+      where: {
+        id: userId,
+        refreshToken: {
+          not: null,
+        },
+      },
+      data: {
+        refreshToken: null,
+      },
+    });
+
+    return true;
   }
-  refreshToken() {
-    return { message: 'Token refreshed' };
+
+  async refreshToken(userId: string, rt: string) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+    if (!user || !user.refreshToken)
+      throw new ForbiddenException('Access Denied');
+
+    const rtMatches = await argon.verify(user.refreshToken, rt);
+    if (!rtMatches) throw new ForbiddenException('Access Denied');
+
+    const tokens = await this.issueTokens(user.id, user.name, user.email);
+    await this.updateRtHash(user.id, tokens.refresh_token);
+
+    return tokens;
   }
 
   hashData(data: string) {
