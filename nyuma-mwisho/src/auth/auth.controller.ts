@@ -1,4 +1,5 @@
 import { Body, Controller, Post } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
 import {
   GetCurrentUser,
   GetCurrentUserId,
@@ -18,6 +19,7 @@ export class AuthController {
     return await this.authService.localSignup(dto);
   }
 
+  @Throttle(5, 60)
   @Public()
   @Post('local/signin')
   async localSignin(@Body() dto: LocalSigninDto): Promise<Tokens> {

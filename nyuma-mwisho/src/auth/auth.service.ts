@@ -4,6 +4,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as argon from 'argon2';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -17,6 +18,7 @@ export class AuthService {
     private userService: UserService,
     private jwtService: JwtService,
     private prisma: PrismaService,
+    private configService: ConfigService,
   ) {}
 
   async localSignup(dto: LocalSignupDto): Promise<Tokens> {
@@ -122,7 +124,10 @@ export class AuthService {
           name,
           email,
         },
-        { secret: 'at-secret', expiresIn: 60 * 15 }, //15 minutes,
+        {
+          secret: this.configService.get<string>('AT_SECRET'),
+          expiresIn: 60 * 15,
+        }, //15 minutes,
       ),
       this.jwtService.signAsync(
         {
@@ -130,7 +135,10 @@ export class AuthService {
           name,
           email,
         },
-        { secret: 'rt-secret', expiresIn: 60 * 60 * 24 * 7 }, //a week,
+        {
+          secret: this.configService.get<string>('RT_SECRET'),
+          expiresIn: 60 * 60 * 24 * 7,
+        }, //a week,
       ),
     ]);
 
