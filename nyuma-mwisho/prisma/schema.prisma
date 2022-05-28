@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String   @id() @default(uuid())
+  name            String
+  email           String   @unique
+  isEmailVerified Boolean  @default(false)
+  password        String
+  refreshToken    String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  Folder          Folder[]
+  Task            Task[]
+}
+
+model Folder {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(255)
+  color     String   @db.VarChar(7)
+  createdAt DateTime @default(now()) @db.Timestamptz()
+  updatedAt DateTime @updatedAt @db.Timestamptz()
+  Task      Task[]
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Task {
+  id          String    @id @default(uuid())
+  title       String
+  description String?
+  startDate   DateTime  @default(now()) @db.Timestamptz()
+  dueDate     DateTime? @db.Timestamptz()
+  reminder    DateTime? @db.Timestamptz()
+  isCompleted Boolean   @default(false)
+  createdAt   DateTime  @default(now()) @db.Timestamptz()
+  updatedAt   DateTime  @updatedAt @db.Timestamptz()
+  Subtask     Subtask[]
+  folderId    Int
+  folder      Folder    @relation(fields: [folderId], references: [id])
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+}
+
+model Subtask {
+  id          Int       @id @default(autoincrement())
+  title       String
+  startDate   DateTime  @default(now()) @db.Timestamptz()
+  dueDate     DateTime? @db.Timestamptz()
+  reminder    DateTime? @db.Timestamptz()
+  isCompleted Boolean   @default(false)
+  createdAt   DateTime  @default(now()) @db.Timestamptz()
+  updatedAt   DateTime  @updatedAt @db.Timestamptz()
+  taskId      String
+  task        Task      @relation(fields: [taskId], references: [id])
+}
