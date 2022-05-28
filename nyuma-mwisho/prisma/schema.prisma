@@ -16,7 +16,7 @@ model User {
   email           String   @unique
   isEmailVerified Boolean  @default(false)
   password        String
-  refreshToken    String
+  refreshToken    String?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
   Folder          Folder[]
