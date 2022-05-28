@@ -59,10 +59,10 @@ export class AuthService {
     return tokens;
   }
 
-  async localSignout(userId: string): Promise<boolean> {
+  async localSignout(sub: string): Promise<boolean> {
     await this.prisma.user.updateMany({
       where: {
-        id: userId,
+        id: sub,
         refreshToken: {
           not: null,
         },

@@ -1,6 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateUserDto } from './dto';
+import { CreateUserDto, EditUserDto } from './dto';
 import { ReturnUser, SelectUser } from './types';
 
 @Injectable()
@@ -27,33 +31,43 @@ export class UserService {
     return user;
   }
 
-  async getAll(): Promise<ReturnUser[]> {
-    const users = await this.prisma.user.findMany({ select: this.select });
+  async edit(id: string, dto: EditUserDto): Promise<ReturnUser> {
+    if (id) {
+      const checkUser = await this.prisma.user.findUnique({
+        where: { id },
+      });
 
-    if (!users) throw new NotFoundException('No users were found');
+      if (!checkUser) throw new NotFoundException("User doesn't exist");
+    }
 
-    return users;
-  }
+    if (dto.email) {
+      const checkEmail = await this.prisma.user.findUnique({
+        where: { email: dto.email },
+      });
 
-  async getById(id: string): Promise<ReturnUser> {
-    const user = await this.prisma.user.findUnique({
+      if (checkEmail) throw new ConflictException('Email already in use');
+    }
+
+    const user = await this.prisma.user.update({
       where: { id },
+      data: { ...dto },
       select: this.select,
     });
-
-    if (!user) throw new NotFoundException('User not found');
 
     return user;
   }
 
-  async getByEmail(email: string): Promise<ReturnUser> {
-    const user = await this.prisma.user.findUnique({
-      where: { email },
-      select: this.select,
-    });
+  async delete(userId: string) {
+    if (userId) {
+      const checkUser = await this.prisma.user.findUnique({
+        where: { id: userId },
+      });
 
-    if (!user) throw new NotFoundException('User not found');
+      if (!checkUser) throw new NotFoundException("User doesn't exist");
+    }
 
-    return user;
+    const user = await this.prisma.user.delete({ where: { id: userId } });
+
+    if (user) return { message: 'Account deleted successully' };
   }
 }

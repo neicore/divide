@@ -27,8 +27,8 @@ export class AuthController {
   }
 
   @Post('local/signout')
-  async localSignout(@GetCurrentUserId() userId: string): Promise<boolean> {
-    return await this.authService.localSignout(userId);
+  async localSignout(@GetCurrentUserId() sub: string): Promise<boolean> {
+    return await this.authService.localSignout(sub);
   }
 
   @Public()
