@@ -11,16 +11,17 @@ datasource db {
 }
 
 model User {
-  id              String   @id() @default(uuid())
+  id              String    @id() @default(uuid())
   name            String
-  email           String   @unique
-  isEmailVerified Boolean  @default(false)
+  email           String    @unique
+  isEmailVerified Boolean   @default(false)
   password        String
   refreshToken    String?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
   Folder          Folder[]
   Task            Task[]
+  Subtask         Subtask[]
 }
 
 model Folder {
@@ -62,4 +63,6 @@ model Subtask {
   updatedAt   DateTime  @updatedAt @db.Timestamptz()
   taskId      String
   task        Task      @relation(fields: [taskId], references: [id])
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
 }

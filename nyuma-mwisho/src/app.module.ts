@@ -10,6 +10,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { UserModule } from './user/user.module';
 import { FolderModule } from './folder/folder.module';
 import { TaskModule } from './task/task.module';
+import { SubtaskModule } from './subtask/subtask.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { TaskModule } from './task/task.module';
     UserModule,
     FolderModule,
     TaskModule,
+    SubtaskModule,
   ],
   controllers: [AppController],
   providers: [
