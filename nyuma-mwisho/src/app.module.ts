@@ -9,6 +9,7 @@ import { AtGuard } from './common/guards';
 import { PrismaModule } from './prisma/prisma.module';
 import { UserModule } from './user/user.module';
 import { FolderModule } from './folder/folder.module';
+import { TaskModule } from './task/task.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { FolderModule } from './folder/folder.module';
     AuthModule,
     UserModule,
     FolderModule,
+    TaskModule,
   ],
   controllers: [AppController],
   providers: [
