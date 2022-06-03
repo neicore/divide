@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Patch } from '@nestjs/common';
-import { GetCurrentUserId } from 'src/common/decorators';
+import { GetCurrentUserId } from '../common/decorators';
 import { EditUserDto } from './dto';
 import { ReturnUser } from './types';
 import { UserService } from './user.service';

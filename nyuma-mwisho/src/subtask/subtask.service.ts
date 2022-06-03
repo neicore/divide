@@ -3,7 +3,7 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { CreateSubtaskDto, EditSubtaskDto, TaskDto } from './dto';
 
 //TODO: Dry code

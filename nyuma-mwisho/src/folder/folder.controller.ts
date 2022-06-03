@@ -7,7 +7,7 @@ import {
   Get,
   Delete,
 } from '@nestjs/common';
-import { GetCurrentUserId } from 'src/common/decorators';
+import { GetCurrentUserId } from '../common/decorators';
 import { CreateFolderDto, EditFolderDto } from './dto';
 import { FolderService } from './folder.service';
 

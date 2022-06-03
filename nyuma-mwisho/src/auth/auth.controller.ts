@@ -1,10 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
-import {
-  GetCurrentUser,
-  GetCurrentUserId,
-  Public,
-} from 'src/common/decorators';
+import { GetCurrentUser, GetCurrentUserId, Public } from '../common/decorators';
 import { AuthService } from './auth.service';
 import { LocalSigninDto, LocalSignupDto } from './dto';
 import { Tokens } from './types';

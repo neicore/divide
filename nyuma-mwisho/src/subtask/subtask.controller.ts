@@ -7,7 +7,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { GetCurrentUser } from 'src/common/decorators';
+import { GetCurrentUser } from '../common/decorators';
 import { CreateSubtaskDto, EditSubtaskDto, TaskDto } from './dto';
 import { SubtaskService } from './subtask.service';
 
