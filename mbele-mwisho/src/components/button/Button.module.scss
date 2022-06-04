@@ -1,0 +1,19 @@
+.button {
+    display: inline-block;
+    padding: 0.5em 1em;
+    text-decoration: none;
+    background-color: #eee;
+    border-radius: 0.25em;
+    border: 0.1em solid #999;
+    color: #333;
+    font-family: sans-serif;
+    font-size: 1em;
+    font-weight: bold;
+    margin: 0.5em 1em;
+    text-align: center;
+    transition: all 0.2s;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    -ms-transition: all 0.2s;
+}
