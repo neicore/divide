@@ -6,6 +6,7 @@ import {
   Post,
   Get,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { GetCurrentUserId } from '../common/decorators';
 import { CreateFolderDto, EditFolderDto } from './dto';
@@ -31,7 +32,7 @@ export class FolderController {
   @Get(':id')
   async getOne(
     @GetCurrentUserId() userId: string,
-    @Param('id') folderId: number,
+    @Param('id', ParseIntPipe) folderId: number,
   ) {
     return await this.folderService.getOne(userId, folderId);
   }
@@ -39,7 +40,7 @@ export class FolderController {
   @Patch(':id')
   async edit(
     @GetCurrentUserId() userId: string,
-    @Param('id') folderId: number,
+    @Param('id', ParseIntPipe) folderId: number,
     @Body() dto: EditFolderDto,
   ) {
     return await this.folderService.edit(userId, folderId, dto);
@@ -48,7 +49,7 @@ export class FolderController {
   @Delete(':id')
   async delete(
     @GetCurrentUserId() userId: string,
-    @Param('id') folderId: number,
+    @Param('id', ParseIntPipe) folderId: number,
   ) {
     return await this.folderService.delete(userId, folderId);
   }

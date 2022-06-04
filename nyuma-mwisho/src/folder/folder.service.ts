@@ -86,6 +86,10 @@ export class FolderService {
   }
 
   async getFolder(id: number) {
-    return await this.prisma.folder.findUnique({ where: { id } });
+    try {
+      return await this.prisma.folder.findUnique({ where: { id } });
+    } catch (error) {
+      return error;
+    }
   }
 }
