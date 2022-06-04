@@ -1,0 +1,12 @@
+@import '../../styles/constants';
+
+.logo {
+    display: flex;
+    align-items: center;
+
+    h1 {
+        // font-family: $font;
+        font-size: 2.5em;
+        margin-left: .5em;
+    }
+}
