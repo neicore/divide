@@ -4,10 +4,11 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
 } from '@nestjs/common';
-import { GetCurrentUser } from '../common/decorators';
+import { GetCurrentUserId } from '../common/decorators';
 import { CreateSubtaskDto, EditSubtaskDto, TaskDto } from './dto';
 import { SubtaskService } from './subtask.service';
 
@@ -16,19 +17,19 @@ export class SubtaskController {
   constructor(private subtaskService: SubtaskService) {}
 
   @Post()
-  create(@GetCurrentUser() userId: string, @Body() dto: CreateSubtaskDto) {
+  create(@GetCurrentUserId() userId: string, @Body() dto: CreateSubtaskDto) {
     return this.subtaskService.create(userId, dto);
   }
 
   @Get()
-  getAll(@GetCurrentUser() userId: string, @Body() taskId: TaskDto) {
+  getAll(@GetCurrentUserId() userId: string, @Body() taskId: TaskDto) {
     return this.subtaskService.getAll(userId, taskId);
   }
 
   @Get(':id')
   getOne(
-    @GetCurrentUser() userId: string,
-    @Param('id') subtaskId: number,
+    @GetCurrentUserId() userId: string,
+    @Param('id', ParseIntPipe) subtaskId: number,
     @Body() taskId: TaskDto,
   ) {
     return this.subtaskService.getOne(userId, subtaskId, taskId);
@@ -36,8 +37,8 @@ export class SubtaskController {
 
   @Patch(':id')
   edit(
-    @GetCurrentUser() userId: string,
-    @Param('id') subtaskId: number,
+    @GetCurrentUserId() userId: string,
+    @Param('id', ParseIntPipe) subtaskId: number,
     @Body() dto: EditSubtaskDto,
   ) {
     return this.subtaskService.edit(userId, subtaskId, dto);
@@ -45,8 +46,8 @@ export class SubtaskController {
 
   @Delete(':id')
   delete(
-    @GetCurrentUser() userId: string,
-    @Param('id') subtaskId: number,
+    @GetCurrentUserId() userId: string,
+    @Param('id', ParseIntPipe) subtaskId: number,
     @Body() taskId: TaskDto,
   ) {
     return this.subtaskService.delete(userId, subtaskId, taskId);
