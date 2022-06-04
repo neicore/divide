@@ -1,4 +1,5 @@
 export type Props = {
-  title: string
+  title: string,
   type?: 'submit' | 'reset' | 'button'
+  style: 'solid' | 'outline',
 }
