@@ -7,7 +7,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { GetCurrentUser } from '../common/decorators';
+import { GetCurrentUserId } from '../common/decorators';
 import { CreateTaskDto, EditTaskDto } from './dto';
 import { TaskService } from './task.service';
 
@@ -16,23 +16,23 @@ export class TaskController {
   constructor(private taskService: TaskService) {}
 
   @Post()
-  create(@GetCurrentUser() userId: string, @Body() dto: CreateTaskDto) {
+  create(@GetCurrentUserId() userId: string, @Body() dto: CreateTaskDto) {
     return this.taskService.create(userId, dto);
   }
 
   @Get()
-  getAll(@GetCurrentUser() userId: string) {
+  getAll(@GetCurrentUserId() userId: string) {
     return this.taskService.getAll(userId);
   }
 
   @Get(':id')
-  getOne(@GetCurrentUser() userId: string, @Param('id') taskId: string) {
+  getOne(@GetCurrentUserId() userId: string, @Param('id') taskId: string) {
     return this.taskService.getOne(userId, taskId);
   }
 
   @Patch(':id')
   edit(
-    @GetCurrentUser() userId: string,
+    @GetCurrentUserId() userId: string,
     @Param('id') taskId: string,
     @Body() dto: EditTaskDto,
   ) {
@@ -40,7 +40,7 @@ export class TaskController {
   }
 
   @Delete(':id')
-  delete(@GetCurrentUser() userId: string, @Param('id') taskId: string) {
+  delete(@GetCurrentUserId() userId: string, @Param('id') taskId: string) {
     return this.taskService.delete(userId, taskId);
   }
 }

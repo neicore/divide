@@ -2,6 +2,7 @@ import {
   IsBoolean,
   IsDate,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
 } from 'class-validator';
@@ -36,6 +37,6 @@ export class CreateTaskDto {
   userId: string;
 
   @IsNotEmpty()
-  @IsBoolean()
+  @IsNumber()
   folderId: number;
 }
