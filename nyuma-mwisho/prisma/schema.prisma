@@ -32,7 +32,7 @@ model Folder {
   updatedAt DateTime @updatedAt @db.Timestamptz()
   Task      Task[]
   userId    String
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Task {
@@ -47,9 +47,9 @@ model Task {
   updatedAt   DateTime  @updatedAt @db.Timestamptz()
   Subtask     Subtask[]
   folderId    Int
-  folder      Folder    @relation(fields: [folderId], references: [id])
+  folder      Folder    @relation(fields: [folderId], references: [id], onDelete: Cascade)
   userId      String
-  user        User      @relation(fields: [userId], references: [id])
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Subtask {
@@ -62,7 +62,7 @@ model Subtask {
   createdAt   DateTime  @default(now()) @db.Timestamptz()
   updatedAt   DateTime  @updatedAt @db.Timestamptz()
   taskId      String
-  task        Task      @relation(fields: [taskId], references: [id])
+  task        Task      @relation(fields: [taskId], references: [id], onDelete: Cascade)
   userId      String
-  user        User      @relation(fields: [userId], references: [id])
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

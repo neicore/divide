@@ -24,4 +24,8 @@ export class PrismaService
   async onModuleDestroy() {
     await this.$disconnect();
   }
+
+  cleadDb() {
+    return this.user.deleteMany();
+  }
 }
