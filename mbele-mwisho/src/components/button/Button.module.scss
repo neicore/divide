@@ -2,10 +2,10 @@
 
 .button {
     border: 1.5px solid $black;
-    padding: .5em 1em;
+    padding: $padding;
     background-color: $black;
     color: $white;
-    border-radius: .4em;
+    border-radius: $border_radius;
     font-size: 16px;
     transition: background-color 250ms ease-in-out;
 

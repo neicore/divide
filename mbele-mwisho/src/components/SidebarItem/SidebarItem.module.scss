@@ -1,0 +1,34 @@
+@import '../../styles/constants';
+
+.sidebar_item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $padding;
+    color: $black;
+    border-radius: $border_radius;
+    transition: transform 100ms ease-in-out,
+        background-color 250ms ease-in-out;
+    font-size: 20px;
+
+    &:hover {
+        background-color: $bg_hover;
+    }
+
+    &:active {
+        transform: scale(.99);
+    }
+
+    &.active {
+        background-color: $bg_select;
+    }
+
+    .group {
+        display: flex;
+        align-items: center;
+
+        p {
+            margin-left: 1em;
+        }
+    }
+}

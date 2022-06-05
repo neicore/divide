@@ -1,4 +1,4 @@
-import React, { ComponentType, ReactElement } from 'react'
+import React, { ReactElement } from 'react'
 import styles from './IconButton.module.scss'
 
 type Props = {
