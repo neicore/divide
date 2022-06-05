@@ -5,7 +5,7 @@ import { Button } from '../src/components/button'
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: 'Button',
+  title: 'Button/Normal',
   component: Button,
   argTypes: {
     backgroundColor: { control: 'color' },

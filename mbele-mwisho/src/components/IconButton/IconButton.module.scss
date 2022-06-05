@@ -1,0 +1,20 @@
+@import '../../styles/constants';
+
+.button {
+    padding: .5em;
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 250ms ease-in-out;
+
+    &:hover {
+        background-color: $bg_hover;
+    }
+
+    &:active {
+        transform: scale(.97);
+    }
+}

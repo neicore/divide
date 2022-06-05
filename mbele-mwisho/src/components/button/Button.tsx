@@ -1,6 +1,11 @@
 import React from 'react'
-import { Props } from './types'
 import styles from './Button.module.scss'
+
+type Props = {
+  title: string
+  type?: 'submit' | 'reset' | 'button'
+  style: 'solid' | 'outline'
+}
 
 const Button = ({ title, type, style }: Props) => {
   const buttonStyle =
