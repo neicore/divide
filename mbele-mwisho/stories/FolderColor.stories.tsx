@@ -1,7 +1,7 @@
 import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 
-import { FolderColor } from '../src/components/FolderColor'
+import { FolderColor } from '../src/components/folderColor'
 
 export default {
   title: 'Folder/Color',

@@ -1,7 +1,7 @@
 import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 
-import { CounterBadge } from '../src/components/CounterBadge'
+import { CounterBadge } from '../src/components/counterBadge'
 
 export default {
   title: 'Folder/CounterBadge',
