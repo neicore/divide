@@ -1,19 +1,27 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import { Fragment } from 'react'
+import { Sidebar } from '../components/sidebar'
+import TopBar from '../components/topBar/TopBar'
 
 const Home: NextPage = () => {
   return (
-    <div>
+    <Fragment>
       <Head>
         <title>Divide</title>
         <meta name="description" content="Overcomplicated todo app" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        Hello
-      </main>
-    </div>
+      <div>
+        <Sidebar />
+
+        <div>
+          <TopBar />
+          <main>Yolo</main>
+        </div>
+      </div>
+    </Fragment>
   )
 }
 
